@@ -1,0 +1,6 @@
+schema = 1
+id = "cc-switch-quotas"
+name = "CC Switch Quotas"
+version = "0.1.0"
+description = "Show enabled CC Switch provider usage in Tern's status bar and a native pane."
+window = "window.luau"
