@@ -1,14 +1,30 @@
-# Tern CC Switch 额度插件
+# Tern CC Switch Usage Plugin
 
-在 Tern 状态栏显示 CC Switch **当前供应商**已启用的用量查询结果。点击片段或运行“打开 CC Switch 额度”可查看全部套餐并手动刷新。插件每五分钟自动查询一次；查询失败时保留上一次成功的列表。
+**English** | [简体中文](README_ZH.md)
 
-插件只读 `~/.cc-switch/cc-switch.db`，按 CC Switch 保存的用量脚本查询额度，不会修改数据库。需本机安装 Python 3 和 Node.js。若 CC Switch 使用了自定义配置目录，可在 Tern 环境中设置 `CC_SWITCH_CONFIG_DIR`。
+Show usage for the **current provider** in each CC Switch app in Tern's status bar. Click a status segment, or run **打开 CC Switch 额度** (Open CC Switch Quotas) from the command palette, to open a native detail pane with all plans and a Refresh button. The plugin queries every five minutes. If it cannot read the database, it keeps the last loaded results and shows an error.
 
-目前支持 CC Switch 的通用、New API 和自定义 JavaScript 用量脚本。`official_subscription`、`token_plan`、`balance`、`github_copilot` 由 CC Switch 应用内的专用查询实现；CC Switch 没有供外部读取这些结果的接口，详情面板会显示“需要 CC Switch 应用内查询”。只显示各应用当前供应商，不查询所有历史供应商。
+## Requirements
+
+- Tern with window plugin support
+- CC Switch data on the same computer as the Tern window
+- Python 3 and Node.js available in Tern's `PATH`
+
+The plugin opens `~/.cc-switch/cc-switch.db` in read-only mode. If CC Switch uses a custom configuration directory, set `CC_SWITCH_CONFIG_DIR` in Tern's environment to that directory. The plugin does not change CC Switch data.
+
+## Install
 
 ```sh
-tern plugin link /path/to/this/directory
+tern plugin link /path/to/tern-plugin-ccswitch-usage
 tern plugin list
 ```
 
-已启用的脚本会在本机执行并向其配置的额度接口发送请求，和在 CC Switch 内启用脚本一样，需要信任这些脚本及其来源。插件不会打印或保存 API Key。
+Enable the usage query for a provider in CC Switch to display it in Tern. If the status segment is not visible, enable Tern's status bar.
+
+## Supported queries
+
+The plugin runs saved **General**, **New API**, and **Custom JavaScript** usage scripts for current providers. It displays up to three providers in the status bar and all queried providers in the detail pane.
+
+CC Switch handles `official_subscription`, `token_plan`, `balance`, and `github_copilot` through app-internal queries. CC Switch does not expose those results through a local API, so this plugin shows an explanation for those query types instead of an allowance. It does not query providers that are not current.
+
+Enabled scripts run locally and send requests to their configured usage endpoints. Only enable scripts from sources you trust. The plugin does not print or save API keys.
